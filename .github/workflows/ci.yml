@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: validate
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check repository hygiene
+        run: git diff --check
+
+      - name: Validate Homebrew tap
+        shell: bash
+        run: |
+          test -f README.md
+          test -f .github/CODEOWNERS
+
+          files=()
+          while IFS= read -r -d '' file; do
+            files+=("$file")
+          done < <(find Formula Casks -type f -name '*.rb' -print0 2>/dev/null || true)
+
+          for file in "${files[@]}"; do
+            ruby -c "$file"
+          done
+
+          if ((${#files[@]})); then
+            brew audit --strict --online "${files[@]}"
+          fi

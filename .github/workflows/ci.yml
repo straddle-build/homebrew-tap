@@ -34,5 +34,24 @@ jobs:
           done
 
           if ((${#files[@]})); then
-            brew audit --strict --online "${files[@]}"
+            # brew audit accepts names, not paths. Tap this checkout (the
+            # candidate commit) and audit its fully qualified names.
+            tap=straddle-build/tap
+            brew tap "$tap" "$GITHUB_WORKSPACE"
+            test "$(git -C "$(brew --repo "$tap")" rev-parse HEAD)" = "$(git rev-parse HEAD)"
+
+            formulae=()
+            casks=()
+            for file in "${files[@]}"; do
+              case "$file" in
+                Formula/*) formulae+=("$tap/$(basename "$file" .rb)") ;;
+                Casks/*) casks+=("$tap/$(basename "$file" .rb)") ;;
+              esac
+            done
+            if ((${#formulae[@]})); then
+              brew audit --strict --online --formula "${formulae[@]}"
+            fi
+            if ((${#casks[@]})); then
+              brew audit --strict --online --cask "${casks[@]}"
+            fi
           fi

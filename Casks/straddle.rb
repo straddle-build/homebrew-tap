@@ -3,24 +3,23 @@ cask "straddle" do
   version "1.0.4"
 
   on_macos do
-    on_intel do
-      sha256 "100eadaaef2ce8d6ff88fe296bd1247f19609ccd484de3bfc698af9ed800a47b"
-      url "https://github.com/straddle-build/straddle-cli/releases/download/v#{version}/straddle_#{version}_darwin_amd64.tar.gz"
-    end
     on_arm do
       sha256 "54ec01065d166d0b9273cca629358be05af77d7bfae0f5b5cf76c75ca67f9147"
       url "https://github.com/straddle-build/straddle-cli/releases/download/v#{version}/straddle_#{version}_darwin_arm64.tar.gz"
     end
-  end
-
-  on_linux do
     on_intel do
-      sha256 "37f86da8a88b4f5882743661d2be6833f509b81edeafefae5de2712e84527c08"
-      url "https://github.com/straddle-build/straddle-cli/releases/download/v#{version}/straddle_#{version}_linux_amd64.tar.gz"
+      sha256 "100eadaaef2ce8d6ff88fe296bd1247f19609ccd484de3bfc698af9ed800a47b"
+      url "https://github.com/straddle-build/straddle-cli/releases/download/v#{version}/straddle_#{version}_darwin_amd64.tar.gz"
     end
+  end
+  on_linux do
     on_arm do
       sha256 "bbeb12f2d4f17df7c83a5bd2cf637d9e60ff40f395829fcc96b7129b31686242"
       url "https://github.com/straddle-build/straddle-cli/releases/download/v#{version}/straddle_#{version}_linux_arm64.tar.gz"
+    end
+    on_intel do
+      sha256 "37f86da8a88b4f5882743661d2be6833f509b81edeafefae5de2712e84527c08"
+      url "https://github.com/straddle-build/straddle-cli/releases/download/v#{version}/straddle_#{version}_linux_amd64.tar.gz"
     end
   end
 
@@ -35,5 +34,4 @@ cask "straddle" do
   binary "straddle"
 
   # No zap stanza required
-
 end
